@@ -19,19 +19,60 @@
     <ul class="plates">
       <li>Loading Tapas...</li>
     </ul>
+
     <form class="add-items">
-      <input type="text" name="item" placeholder="Item Name" required>
-      <input type="submit" value="+ Add Item">
+      <input class = "input" type="text" name="item" placeholder="Item Name" required>
+      <input class= "adbtn" type="submit" value="+ Add Item">
     </form>
   </div>
 
 <script>
   const addItems = document.querySelector('.add-items');
   const itemsList = document.querySelector('.plates');
-  const items = [];
+  let items = [];
+  const input = document.querySelector('.input');
+ const adbutton =document.querySelector('.adbtn');
+ // add items with checkbox 
+// in localstorage we need to add done or not done  even after refresh
+
+const updateList =()=>{
+let output=` <li>Loading Tapas...</li>`;
+items.forEach((item,i)=>{output +=`<li>
+  <input class="check" type="checkbox" data-index=${i} id="item${i}" ${item.done ? 'checked' : ''} />
+  <label for="item${i}">${item.text}</label>
+</li>`});
+itemsList.innerHTML =output; 
+}
+
+adbutton.addEventListener("click",()=>{
+  items.push({text :input.value, done:false});
+input.value='';
+updateList()
+})
+
+
+itemsList.addEventListener('click', (e) => {
+        if (e.target.classList.contains('check')) {
+          const id = e.target.dataset.index;
+          items.forEach((item, index) => {
+            console.log(index, id); 
+            if (index == id) {
+              item.done = !item.done;
+            }
+          });
+          updateList();
+        }
+      });
+
+
+window.addEventListener('DOMContentLoaded',()=>{
+  JSON.parse(localStorage.getItem('items'))
+
+  const itemlist = localStorage.getItem('listitem')
+
+})
 
 </script>
-
 
 </body>
 </html>
